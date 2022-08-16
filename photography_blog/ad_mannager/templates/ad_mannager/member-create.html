@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% extends 'ad_mannager/base.html' %}
+
+{% block active_member_list%}class="active"{%endblock active_member_list %} 
+
+{% block content %}
+{% load static %}
+
+ <!-- Main Content -->
+ <div class="main-content">
+    <section class="section">
+      <div class="section-header">
+        <div class="section-header-back">
+          <a href="{% url 'post:member-list' %}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+        </div>
+        <h1>メンバーを追加</h1>
+        <div class="section-header-breadcrumb">
+          <div class="breadcrumb-item active"><a href="{% url 'post:index' %}">Habeii</a></div>
+          <div class="breadcrumb-item"><a href="#">投稿</a></div>
+          <div class="breadcrumb-item">メンバーを追加</div>
+        </div>
+      </div>
+
+        <div class="section-body">
+            <h2 class="section-title">新規メンバー作成</h2>
+            <p class="section-lead">
+            このページでは、新規メンバーを作成し、すべてのフィールドに入力できます。
+            </p>
+            <div class="row">
+            <div class="col-12">
+                <div class="card">
+                <div class="card-header">
+                    <h4>新規メンバーを追加してください</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'post:member-create' %}" method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">{{ field.label_tag }}</label>
+                            <div class="col-sm-12 col-md-7">
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <small style="color: grey">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                    <div class="col-sm-12 col-md-7">
+                        <button type="submit" class="btn btn-primary">作成</button>
+                    </div>
+                    </div>
+                </form>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+      {% comment %} <div class="section-body">
+        <h2 class="section-title">メンバーを追加</h2>
+        <p class="section-lead">
+            以下の情報を入力してください。
+        </p>
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h4></h4>
+              </div>
+              <div class="card-body">
+                
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                      <p>
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                        {% if field.help_text %}
+                          <small style="color: grey">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                          <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                      </p>
+                    {% endfor %}
+                    <button class="btn btn-primary" type="submit">Sign up</button>
+                  </form>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> {% endcomment %}
+    </section>
+  </div>
+
+{% endblock content %}

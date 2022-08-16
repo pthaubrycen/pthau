@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+{% extends 'ad_mannager/base.html' %}
+
+{% block active_index %}class="active"{% endblock active_index %}
+
+{% block content %}
+{% load static %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-header">
+            <h1>投稿一覧</h1>
+            <div class="section-header-button">
+              <a href="{% url 'post:post-create' %}" class="btn btn-primary">新しい投稿を追加</a>
+            </div>
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href=".">Habeii</a></div>
+              <div class="breadcrumb-item"><a href=".">投稿</a></div>
+              <div class="breadcrumb-item">すべての投稿</div>
+            </div>
+          </div>
+          <div class="section-body">
+            <h2 class="section-title">投稿</h2>
+            <p class="section-lead">
+              編集、削除など、すべての投稿を管理できます。
+            </p>
+
+            <div class="row">
+              <div class="col-12">
+                <div class="card mb-0">
+                  <div id="myDIV" class="card-body">
+                    <ul class="nav nav-pills">
+                      <li class="nav-item">
+                        <button class="btn active" onclick="findBy('全て')">全て<span class="badge badge-white">{{len_all}}</span></button>
+                      </li>
+                      <li class="nav-item">
+                        <button class="btn" onclick="findBy('公衆')">公衆<span class="badge badge-white">{{len_public_post}}</span></button>
+                      </li>
+                      <li class="nav-item">
+                        <button class="btn" onclick="findBy('下書き')">下書き<span class="badge badge-white">{{len_draft_post}}</span></button>
+                      </li>
+                      <li class="nav-item">
+                        <button class="btn" onclick="findBy('保留中')">保留中<span class="badge badge-white">{{len_pending_post}}</span></button>
+                      </li>
+                      <li class="nav-item">
+                        <button class="btn" onclick="findBy('消去済')">ゴミ箱<span class="badge badge-white">{{len_removed_post}}</span></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>すべての投稿</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="float-right">
+                      <form>
+                        <div class="input-group">
+                          <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="タイトルで検索">
+                          <div class="input-group-append">                                            
+                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+
+                    <div class="clearfix mb-3"></div>
+
+                    <div class="table-responsive">
+                      <table id="myTable" class="table table-striped">
+                        <tr>
+                          <th class="text-center pt-2">
+                            <div class="custom-checkbox custom-checkbox-table custom-control">
+                              <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
+                              <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
+                            </div>
+                          </th>
+                          <th>タイトル</th>
+                          <th>カテゴリー</th>
+                          <th>著者</th>
+                          <th>作成日</th>
+                          <th>状態</th>
+                        </tr>
+                        {% for post in posts %}
+                          <tr>
+                            <td>
+                              <div class="custom-checkbox custom-control">
+                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-2">
+                                <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
+                              </div>
+                            </td>
+                            <td>{{post.title}}
+                              <div class="table-links">
+                                <a href="{% url 'post:post-detail' post.slug %}">見る</a>
+                                <div class="bullet"></div>
+                                <a href="{% url 'post:post-edit' post.slug %}">編集</a>
+                                <div class="bullet"></div>
+                                <a href="{% url 'post:remove-confirm' post.slug %}" class="text-danger">消去</a>
+                              </div>
+                            </td>
+                            <td>
+                              {{post.category}}
+                            </td>
+                            <td>
+                              <a href="{% url 'post:profile' post.user_id %}">
+                                <img alt="image" src="{{post.user.profile.avatar.url}}" class="rounded-circle" width="35" data-toggle="title" title=""> <div class="d-inline-block ml-1">{{post.user.last_name}}</div>
+                              </a>
+                            </td>
+                            <td>{{post.create_at}}</td>
+                            {% if post.status.status_name == "公衆" %}
+                            <td><div class="badge badge-success">{{post.status}}</div></td>
+                            {% elif post.status.status_name == "下書き" %}
+                            <td><div class="badge badge-warning">{{post.status}}</div></td>
+                            {% elif post.status.status_name == "保留中" %}
+                            <td><div class="badge badge-danger">{{post.status}}</div></td>
+                            {% else%}
+                            <td><div class="badge badge-secondary">{{post.status}}</div></td>
+                            {% endif %}
+                      
+                          </tr>
+                        {% endfor %}
+                      </table>
+                    </div>
+
+                    <div class="float-right">
+                      <nav>
+                        <ul class="pagination">
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                              <span class="sr-only">Previous</span>
+                            </a>
+                          </li>
+                          <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                              <span class="sr-only">次</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      
+      <script>
+        function myFunction() {
+          // Declare variables
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+        }
+
+        function findBy(text){
+          // Declare variables
+          var input, filter, table, tr, td, i, txtValue;
+          if(text == '全て'){
+            text = ''
+          }
+          input = text
+          filter = input.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[5];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+        }
+        </script>
+        <script>
+          // Add active class to the current button (highlight it)
+          var header = document.getElementById("myDIV");
+          var btns = header.getElementsByClassName("btn");
+          for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            this.className += " active";
+            });
+          }
+          </script>
+  {% endblock content %}

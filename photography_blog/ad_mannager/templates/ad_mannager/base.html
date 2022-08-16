@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Habeii &rsaquo; Admin</title>
+ 
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href=" {% static 'ad_mannager/assets/modules/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'ad_mannager/assets/modules/fontawesome/css/all.min.css' %}">
+
+  <!-- CSS Libraries -->
+  <link rel="stylesheet" href="{% static 'ad_mannager/assets/modules/summernote/summernote-bs4.css' %}">
+  <link rel="stylesheet" href="{% static 'ad_mannager/assets/modules/codemirror/lib/codemirror.css' %}">
+  <link rel="stylesheet" href="{% static 'ad_mannager/assets/modules/codemirror/theme/duotone-dark.css' %}">
+  <link rel="stylesheet" href="{% static 'ad_mannager/assets/modules/jquery-selectric/selectric.css' %}">
+  <link rel="stylesheet" href="{% static 'ad_mannager/assets/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}">
+
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{% static 'ad_mannager/assets/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'ad_mannager/assets/css/components.css' %}">
+<!-- Start GA -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-94034622-3');
+</script>
+<!-- /END GA --></head>
+
+<body>
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar">
+        <form class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+          </ul>
+        </form>
+        <ul class="navbar-nav navbar-right">   
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+            <img alt="image" src="{{user.profile.avatar.url}}" class="rounded-circle mr-1">
+            <div class="d-sm-none d-lg-inline-block">こんにちは、 {{user.first_name}}</div></a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <div class="dropdown-title">5分前に訪問しました</div>
+              <a href="{% url 'post:profile' user.id %}" class="dropdown-item has-icon">
+                <i class="far fa-user"></i> 個人ページ
+              </a>
+              <a href="features-settings.html" class="dropdown-item has-icon">
+                <i class="fas fa-cog"></i> 設定
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="{% url 'post:logout' %}" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> ログアウト
+              </a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <div class="main-sidebar sidebar-style-2">
+        <aside id="sidebar-wrapper">
+          <div class="sidebar-brand">
+            <a href="{% url 'post:index' %}">Habeii</a>
+          </div>
+          <div class="sidebar-brand sidebar-brand-sm">
+            <a href="{% url 'post:index' %}">Hb</a>
+          </div>
+          <ul class="sidebar-menu">
+            <li class="menu-header">ページ</li>
+            <li class="dropdown active">
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-bicycle"></i> <span>ページ管理</span></a>
+              <ul class="dropdown-menu">  
+                <li {% block active_index %}{% endblock active_index %}><a class="nav-link" href="{% url 'post:index' %}">投稿一覧</a></li>
+                <li {% block active_create %}{% endblock active_create %}><a class="nav-link" href="{% url 'post:post-create' %}">投稿を作成する</a></li>
+                <li {% block active_profile %}{% endblock active_profile %}><a class="nav-link" href="{% url 'post:profile' user.id%}">個人ページ</a></li>
+                <li {% block active_member_list %}{% endblock active_member_list %}><a class="nav-link" href="{% url 'post:member-list'%}">メンバー管理</a></li>
+                <li {% block active_setting %}{% endblock active_setting %}><a class="nav-link" href="{% url 'post:page-setting' %}">ページ設定</a></li>
+                <li {% block active_setting_detail %}{% endblock active_setting_detail %}><a class="nav-link" href="{% url 'post:detail-setting' %}">詳細設定</a></li>
+              </ul>
+            </li>
+          </ul>
+        </aside>
+      </div>
+
+{% block content %}{% endblock content %}
+
+
+    <footer class="main-footer">
+        <div class="footer-left">
+        Copyright &copy; 2022 <div class="bullet"></div> Design By ファムタインハウ
+        </div>
+        <div class="footer-right">
+        
+        </div>
+    </footer>
+    </div>
+    </div>
+        
+  <!-- General JS Scripts -->
+  <script src="{% static 'ad_mannager/assets/modules/jquery.min.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/modules/popper.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/modules/tooltip.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/modules/bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/modules/nicescroll/jquery.nicescroll.min.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/modules/moment.min.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/js/stisla.js' %}"></script>
+  
+  <!-- JS Libraies -->
+  <script src="{% static 'ad_mannager/assets/modules/summernote/summernote-bs4.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/modules/jquery-selectric/jquery.selectric.min.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/modules/upload-preview/assets/js/jquery.uploadPreview.min.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+
+  <!-- Page Specific JS File -->
+  <script src="{% static 'ad_mannager/assets/js/page/features-posts.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/js/page/features-post-create.js' %}"></script>
+  
+  <!-- Template JS File -->
+  <script src="{% static 'ad_mannager/assets/js/scripts.js' %}"></script>
+  <script src="{% static 'ad_mannager/assets/js/custom.js' %}"></script>
+</body>
+</html>

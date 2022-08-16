@@ -1,0 +1,124 @@
+{% extends 'ad_mannager/base.html' %} 
+{% block active_member_list%}class="active"{%endblock active_member_list %} 
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+<style>
+
+    body{margin-top:20px;
+        }
+        .card {
+            margin-bottom: 24px;
+            box-shadow: 0 2px 3px #e4e8f0;
+        }
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid #eff0f2;
+            border-radius: 1rem;
+        }
+        .avatar-md {
+            height: 4rem;
+            width: 4rem;
+        }
+        .rounded-circle {
+            border-radius: 50%!important;
+        }
+        .img-thumbnail {
+            padding: 0.25rem;
+            background-color: #f1f3f7;
+            border: 1px solid #eff0f2;
+            border-radius: 0.75rem;
+        }
+        .avatar-title {
+            align-items: center;
+            background-color: #3b76e1;
+            color: #fff;
+            display: flex;
+            font-weight: 500;
+            height: 100%;
+            justify-content: center;
+            width: 100%;
+        }
+        .bg-soft-primary {
+            background-color: rgba(59,118,225,.25)!important;
+        }
+        a {
+            text-decoration: none!important;
+        }
+        .badge-soft-danger {
+            color: #f56e6e !important;
+            background-color: rgba(245,110,110,.1);
+        }
+        .badge-soft-success {
+            color: #63ad6f !important;
+            background-color: rgba(99,173,111,.1);
+        }
+        .mb-0 {
+            margin-bottom: 0!important;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.6em;
+            font-size: 75%;
+            font-weight: 500;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.75rem;
+        }
+</style>
+
+<!-- Main Content -->
+<div class="main-content">
+    <section class="section">
+        <div class="section-header">
+            <h1>メンバー一覧<span class="text-muted fw-normal ms-2">({{len_members}})</span></h1>
+            <div class="section-header-button">
+                <a href="{% url 'post:member-create' %}" class="btn btn-primary">メンバーを追加</a>
+            </div>
+            <div class="section-header-breadcrumb">
+                <div class="breadcrumb-item active"><a href="#">Habeii</a></div>
+                <div class="breadcrumb-item">メンバー一覧</div>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                {% for member in member_list %}
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div><img src="{{member.profile.avatar.url}}" alt="" class="avatar-md rounded-circle img-thumbnail" /></div>
+                                <div class="flex-1 ms-3">
+                                    <h5 class="font-size-16 mb-1"><a href="#" class="text-dark">{{member.last_name}}</a></h5>
+                                    <span class="badge badge-soft-success mb-0">{{member.profile.task}}</span>
+                                </div>
+                            </div>
+                            <div class="mt-3 pt-1">
+                                <p class="text-muted mb-0"><i class="mdi mdi-phone font-size-15 align-middle pe-2 text-primary"></i> {{member.profile.phone}}</p>
+                                <p class="text-muted mb-0 mt-2"><i class="mdi mdi-email font-size-15 align-middle pe-2 text-primary"></i> {{member.email}}</p>
+                                <p class="text-muted mb-0 mt-2"><i class="mdi mdi-google-maps font-size-15 align-middle pe-2 text-primary"></i> {{member.profile.address}}</p>
+                            </div>
+                            <div class="d-flex gap-2 pt-4">
+                                <a href="{% url 'post:profile' member.id %}" data-bs-toggle="modal" data-bs-target=".add-new" class="btn btn-light btn-sm w-50"><i class="bx bx-user me-1"></i> プロフィル</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target=".add-new" class="btn btn-primary btn-sm w-50"><i class="bx bx-message-square-dots me-1"></i> コンタクト</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>     
+    </section>
+</div>
+
+{% endblock content %}

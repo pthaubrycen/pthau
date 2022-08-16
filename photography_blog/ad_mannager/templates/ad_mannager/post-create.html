@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+{% extends 'ad_mannager/base.html' %}
+
+{% block active_create %}class="active"{% endblock active_create %}
+
+{% block content %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-header-back">
+              <a href="{% url 'post:index' %}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+            </div>
+            <h1>新しい投稿を作成する</h1>
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href="{% url 'post:index' %}">Habeii</a></div>
+              <div class="breadcrumb-item"><a href="#">投稿</a></div>
+              <div class="breadcrumb-item">新しい投稿を作成する</div>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <h2 class="section-title">新しい投稿を作成する</h2>
+            <p class="section-lead">
+              このページでは、新しい投稿を作成し、すべてのフィールドに入力できます。
+            </p>
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>自分投稿を書いてください</h4>
+                  </div>
+                  <div class="card-body">
+                    <form  enctype="multipart/form-data" action="{% url 'post:post-create' %}" method="POST">
+                      {% csrf_token %}
+                      <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">著者</label>
+                        <div class="col-sm-12 col-md-7">
+                          <select name="user"  id="id_user" class="form-control selectric">
+                            {% for u in form.user %}
+                              {{u}}
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    <div class="form-group row mb-4">
+                      <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">タイトル</label>
+                      <div class="col-sm-12 col-md-7">
+                        {{form.title}}
+                      </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                      <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">カテゴリー</label>
+                      <div class="col-sm-12 col-md-7">
+                        <select name="category"  id="id_category" class="form-control selectric">
+                          {% for c in form.category %}
+                            {{c}}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                      <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">コンテンツ</label>
+                      <div class="col-sm-12 col-md-7">
+                        {{form.content}}
+                      </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                      <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">表紙画像</label>
+                      <div class="col-sm-12 col-md-7">
+                        <div id="image-preview" class="image-preview">
+                          <label for="image-upload" id="image-label">写真を選択</label>
+                          {{form.thumbnail}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                      <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">タグ</label>
+                      <div class="col-sm-12 col-md-7">
+                        {{form.tags}}
+                        <div class="help">タグはコンマで区切られています</div>
+                      </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                      <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">蛞蝓</label>
+                      <div class="col-sm-12 col-md-7">
+                        {{form.slug}}
+                      </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                      <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">状態</label>
+                      <div class="col-sm-12 col-md-7">
+                        <select name="status"  id="id_status"class="form-control selectric">
+                          {% for s in form.status %}     
+                             {{s}}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    {{form.errors}}
+                    <div class="form-group row mb-4">
+                      <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                      <div class="col-sm-12 col-md-7">
+                        <button type="submit" class="btn btn-primary">作成</button>
+                      </div>
+                    </div>
+                  </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+  {% endblock content %}
