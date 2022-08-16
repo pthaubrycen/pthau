@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout
 from ad_mannager.forms import LoginForm, PostForm, SignUpForm, UpdateProfileForm, UpdateUserForm
@@ -103,18 +104,24 @@ def profile(request, id):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=user)
         profile_form = UpdateProfileForm(request.POST, instance=user.profile)
-
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            if request.FILES.get('avatar', None) != None:
+                try:
+                    os.remove(request.user.avatar)
+                except Exception as e:
+                    print('Exception in removing old profile image: ', e)
+                user.profile.avatar = request.FILES.get('avatar', None)
+                user.profile.save()
             messages.success(request, 'Your profile is updated successfully')
-            return redirect('post:index')
+            return redirect('post:profile', id=user.id)
     else:
       
         user_form = UpdateUserForm(instance=user)
         profile_form = UpdateProfileForm(instance=user.profile)
 
-    return render(request, 'ad_mannager/profile.html', {'user_form': user_form, 'profile_form': profile_form, 'uf':user.profile})
+    return render(request, 'ad_mannager/profile.html', {'user_form': user_form, 'profile_form': profile_form, 'uf':user})
 
 @login_required()
 def p_setting(request):

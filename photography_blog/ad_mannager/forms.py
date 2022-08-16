@@ -46,13 +46,16 @@ class UpdateUserForm(forms.ModelForm):
 class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['bio', 'phone', 'task', 'address', 'birthday']
+        fields = ['bio', 'phone', 'task', 'avatar', 'address', 'birthday']
         widgets = {
             'bio' : SummernoteWidget(),
+            'bio' : forms.Textarea(attrs={'class': 'summernote'}),
             'phone' : forms.TextInput(attrs={'class':'form-control'}),
             'task' : forms.TextInput(attrs={'class':'form-control'}),
             'address' : forms.TextInput(attrs={'class':'form-control'}),
-            'birthday' : forms.DateInput(attrs={'class':'form-control'}),  
+            'birthday' : forms.DateInput(attrs={'class':'form-control'}), 
+            'avatar' : forms.FileInput(attrs={'class':'form-control'}),  
+             
         }
 
 class SignUpForm(UserCreationForm):
