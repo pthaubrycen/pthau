@@ -4,8 +4,6 @@ from .models import Category, Post, Profile, Status
 from django_summernote.widgets import SummernoteWidget
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django.utils.translation import gettext_lazy as _
-
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -56,9 +54,9 @@ class UpdateProfileForm(forms.ModelForm):
             
 
 class SignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=False, help_text='任意。')
-    last_name = forms.CharField(max_length=30, required=False, help_text='任意。')
-    email = forms.EmailField(max_length=254, help_text='必要。有効な電子メール アドレスを通知します。')
+    first_name = forms.CharField(max_length=30, required=False, help_text='任意。', label='名')
+    last_name = forms.CharField(max_length=30, required=False, help_text='任意。', label='苗字')
+    email = forms.EmailField(max_length=254, help_text='必要。有効な電子メール アドレスを通知します。', label='メール')
 
     class Meta:
         model = User
@@ -68,10 +66,7 @@ class SignUpForm(UserCreationForm):
         super(SignUpForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs["class"] = "form-control"
-        self.fields['username'].label = 'ユーザ名'
-        self.fields['first_name'].label = '名前'
-        self.fields['last_name'].label = '苗字'
-        self.fields['email'].label = 'メール'
+       
 class CreateCategorys(forms.ModelForm):
     class Meta:
         model = Category
