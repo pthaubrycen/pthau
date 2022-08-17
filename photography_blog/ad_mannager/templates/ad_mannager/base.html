@@ -78,7 +78,7 @@
                 <li {% block active_create %}{% endblock active_create %}><a class="nav-link" href="{% url 'post:post-create' %}">投稿を作成する</a></li>
                 <li {% block active_profile %}{% endblock active_profile %}><a class="nav-link" href="{% url 'post:profile' user.id%}">個人ページ</a></li>
                 <li {% block active_member_list %}{% endblock active_member_list %}><a class="nav-link" href="{% url 'post:member-list'%}">メンバー管理</a></li>
-                <li {% block active_setting %}{% endblock active_setting %}><a class="nav-link" href="{% url 'post:page-setting' %}">ページ設定</a></li>
+                <li {% block active_setting_post %}{% endblock active_setting_post %}><a class="nav-link" href="{% url 'post:post-setting' %}">ブログについて設定</a></li>
                 <li {% block active_setting_detail %}{% endblock active_setting_detail %}><a class="nav-link" href="{% url 'post:detail-setting' %}">詳細設定</a></li>
               </ul>
             </li>

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {% extends 'ad_mannager/base.html' %} 
 {% block active_member_list%}class="active"{%endblock active_member_list %} 
 {% block content %}
@@ -6,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
 <style>
 
-    body{margin-top:20px;
+    body{
         }
         .card {
             margin-bottom: 24px;
@@ -75,13 +76,16 @@
             vertical-align: baseline;
             border-radius: 0.75rem;
         }
+        .btn.btn-sm {
+            margin: 0.2rem;
+        }
 </style>
 
 <!-- Main Content -->
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>メンバー一覧<span class="text-muted fw-normal ms-2">({{len_members}})</span></h1>
+            <h1>メンバー一覧</h1>
             <div class="section-header-button">
                 <a href="{% url 'post:member-create' %}" class="btn btn-primary">メンバーを追加</a>
             </div>
@@ -91,6 +95,11 @@
             </div>
         </div>
         <div class="section-body">
+            <h2 class="section-title">メンバー合計：{{len_members}}
+            </h2>
+            <p class="section-lead">
+            このページでは、メンバーリストを表示し、詳細、編集できます。
+            </p>
             <div class="row">
                 {% for member in member_list %}
                 <div class="col-xl-3 col-sm-6">
@@ -109,7 +118,7 @@
                                 <p class="text-muted mb-0 mt-2"><i class="mdi mdi-google-maps font-size-15 align-middle pe-2 text-primary"></i> {{member.profile.address}}</p>
                             </div>
                             <div class="d-flex gap-2 pt-4">
-                                <a href="{% url 'post:profile' member.id %}" data-bs-toggle="modal" data-bs-target=".add-new" class="btn btn-light btn-sm w-50"><i class="bx bx-user me-1"></i> プロフィル</a>
+                                <a  href="{% url 'post:profile' member.id %}" data-bs-toggle="modal" data-bs-target=".add-new" class="btn btn-light btn-sm w-50"><i class="bx bx-user me-1"></i> プロフィル</a>
                                 <a href="#" data-bs-toggle="modal" data-bs-target=".add-new" class="btn btn-primary btn-sm w-50"><i class="bx bx-message-square-dots me-1"></i> コンタクト</a>
                             </div>
                         </div>

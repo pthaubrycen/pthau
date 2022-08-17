@@ -54,19 +54,15 @@
             <div class="row mt-4">
               <div class="col-12">
                 <div class="card">
-                  <div class="card-header">
-                    <h4>すべての投稿</h4>
-                  </div>
+                  
                   <div class="card-body">
-                    <div class="float-right">
-                      <form>
+                    <div class="float-right">                    
                         <div class="input-group">
                           <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="タイトルで検索">
                           <div class="input-group-append">                                            
-                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                            <i class="fas fa-search btn btn-primary"></i>
                           </div>
                         </div>
-                      </form>
                     </div>
 
                     <div class="clearfix mb-3"></div>
@@ -74,12 +70,6 @@
                     <div class="table-responsive">
                       <table id="myTable" class="table table-striped">
                         <tr>
-                          <th class="text-center pt-2">
-                            <div class="custom-checkbox custom-checkbox-table custom-control">
-                              <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
-                              <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
-                            </div>
-                          </th>
                           <th>タイトル</th>
                           <th>カテゴリー</th>
                           <th>著者</th>
@@ -88,20 +78,19 @@
                         </tr>
                         {% for post in posts %}
                           <tr>
-                            <td>
-                              <div class="custom-checkbox custom-control">
-                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-2">
-                                <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
-                              </div>
-                            </td>
                             <td>{{post.title}}
+                              
                               <div class="table-links">
+                                {% if post.status.id != 5 %}
                                 <a href="{% url 'post:post-detail' post.slug %}">見る</a>
                                 <div class="bullet"></div>
                                 <a href="{% url 'post:post-edit' post.slug %}">編集</a>
                                 <div class="bullet"></div>
                                 <a href="{% url 'post:remove-confirm' post.slug %}" class="text-danger">消去</a>
+                                {% endif %}
+                                
                               </div>
+                              
                             </td>
                             <td>
                               {{post.category}}

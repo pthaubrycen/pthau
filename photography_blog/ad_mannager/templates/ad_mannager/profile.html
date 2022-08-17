@@ -64,23 +64,10 @@
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1>Trang cá nhân</h1>
-      
-      {% if user_form.errors %}
-      <div class="alert alert-danger alert-dismissible" role="alert">
-          <div id="form_errors">
-              {% for key, value in user_form.errors.items %}
-                  <strong>{{ value }}</strong>
-              {% endfor %}
-          </div>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
-  {% endif %}
+      <h1>プロフィル</h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="#">Habeii</a></div>
-        <div class="breadcrumb-item">Trang cá nhân</div>
+        <div class="breadcrumb-item">プロフィル</div>
       </div>
     </div>
     <div class="section-body">
@@ -92,7 +79,7 @@
           <div class="col-xl-4">
             <!-- Profile picture card-->
             <div class="card mb-4 mb-xl-0">
-              <div class="card-header">Ảnh đại diện</div>
+              <div class="card-header">アバター</div>
                 <div class="card-body text-center">
                   <!-- Profile picture image-->
                   <img
@@ -102,7 +89,7 @@
                   />
                   <!-- Profile picture help block-->
                   <div class="small font-italic text-muted mb-4">
-                    PG hoặc PNG khôgn lớn hơn 5 MB
+                    JPEGまたはPNGが5MB以下
                   </div>
                   <!-- Profile picture upload button-->
                  
@@ -114,26 +101,30 @@
           <div class="col-xl-8">
             <!-- Account details card-->
             <div class="card mb-4">
-              <div class="card-header">Chi tiết trang cá nhân</div>
+              <div class="card-header">プロフィル詳細</div>
               <div class="card-body">
 
                   <!-- Form Group (username)-->
                   <div class="mb-3">
                     <label class="small mb-1" for="inputUsername"
-                      >Tên người dùng</label
+                      >ユーザ名</label
                     >
                     {{user_form.username}}
+
+                    {% for error in user_form.username.errors %}
+                        <p style="color: red">{{ error }}</p>
+                    {% endfor %}
                   </div>
                   <!-- Form Row-->
                   <div class="row gx-3 mb-3">
                     <!-- Form Group (first name)-->
                     <div class="col-md-6">
-                      <label class="small mb-1" for="inputFirstName">Tên</label>
+                      <label class="small mb-1" for="inputFirstName">苗字</label>
                       {{user_form.first_name}}
                     </div>
                     <!-- Form Group (last name)-->
                     <div class="col-md-6">
-                      <label class="small mb-1" for="inputLastName">Họ</label>
+                      <label class="small mb-1" for="inputLastName">名前</label>
                       {{user_form.last_name}}
                     </div>
                   </div>
@@ -142,50 +133,54 @@
                     <!-- Form Group (organization name)-->
                     <div class="col-md-6">
                       <label class="small mb-1" for="inputOrgName"
-                        >Bộ phận</label
+                        >役割</label
                       >
                       {{profile_form.task}}
                     </div>
                     <!-- Form Group (location)-->
                     <div class="col-md-6">
                       <label class="small mb-1" for="inputLocation"
-                        >Địa chỉ</label
+                        >アドレス</label
                       >
                       {{profile_form.address}}
+                      
                     </div>
                   </div>
                   <!-- Form Group (email address)-->
                   <div class="mb-3">
                     <label class="small mb-1" for="inputEmailAddress"
-                      >Địa chỉ email</label
+                      >メール</label
                     >
                     {{user_form.email}}
+                      {% for error in user_form.email.errors %}
+                        <p style="color: red">{{ error }}</p>
+                      {% endfor %}
                   </div>
                   <!-- Form Row-->
                   <div class="row gx-3 mb-3">
                     <!-- Form Group (phone number)-->
                     <div class="col-md-6">
                       <label class="small mb-1" for="inputPhone"
-                        >Số điện thoại</label
+                        >電話番号</label
                       >
                       {{profile_form.phone}}
                     </div>
                     <!-- Form Group (birthday)-->
                     <div class="col-md-6">
                       <label class="small mb-1" for="inputBirthday"
-                        >Ngày sinh</label
+                        >生年月日</label
                       >
                       {{profile_form.birthday}}
                     </div>
                   </div>
                   <div class="mb-3">
                     <label class="small mb-1" for="inputUsername"
-                      >Bio</label
+                      >伝記</label
                     >
                     {{profile_form.bio}}
                   </div>
                   <!-- Save changes button-->
-                  <button class="btn btn-primary" type="submit">Lưu lại</button>
+                  <button class="btn btn-primary" type="submit">保存</button>
                 </form>
               </div>
             </div>

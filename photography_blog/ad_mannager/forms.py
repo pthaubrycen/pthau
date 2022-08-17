@@ -1,6 +1,6 @@
-from cProfile import label
+from dataclasses import field
 from django import forms
-from .models import Post, Profile
+from .models import Category, Post, Profile, Status
 from django_summernote.widgets import SummernoteWidget
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -35,28 +35,25 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
-        widgets = {
-            'username' : forms.TextInput(attrs={'class':'form-control'}),
-            'first_name' : forms.TextInput(attrs={'class':'form-control'}),
-            'last_name' : forms.TextInput(attrs={'class':'form-control'}),
-            'email' : forms.EmailInput(attrs={'class':'form-control'}),
-        }
-
+    def __init__(self, *args, **kwargs):
+        super(UpdateUserForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+        self.fields['email'].required = True
 
 class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['bio', 'phone', 'task', 'avatar', 'address', 'birthday']
-        widgets = {
-            'bio' : SummernoteWidget(),
-            'bio' : forms.Textarea(attrs={'class': 'summernote'}),
-            'phone' : forms.TextInput(attrs={'class':'form-control'}),
-            'task' : forms.TextInput(attrs={'class':'form-control'}),
-            'address' : forms.TextInput(attrs={'class':'form-control'}),
-            'birthday' : forms.DateInput(attrs={'class':'form-control'}), 
-            'avatar' : forms.FileInput(attrs={'class':'form-control'}),  
-             
-        }
+
+    
+    def __init__(self, *args, **kwargs):
+        super(UpdateProfileForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+            field.required = False
+        self.fields['bio'].widget.attrs["class"] = "summernote"
+            
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='任意。')
@@ -75,3 +72,22 @@ class SignUpForm(UserCreationForm):
         self.fields['first_name'].label = '名前'
         self.fields['last_name'].label = '苗字'
         self.fields['email'].label = 'メール'
+class CreateCategorys(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['category_name']
+    def __init__(self, *args, **kwargs):
+        super(CreateCategorys, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+        self.fields['category_name'].required = True
+
+class CreateStatus(forms.ModelForm):
+    class Meta:
+        model = Status
+        fields = ['status_name']
+    def __init__(self, *args, **kwargs):
+        super(CreateStatus, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+        self.fields['status_name'].required = True

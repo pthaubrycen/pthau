@@ -1,8 +1,8 @@
 import os
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout
-from ad_mannager.forms import LoginForm, PostForm, SignUpForm, UpdateProfileForm, UpdateUserForm
-from .models import Post, Status
+from ad_mannager.forms import CreateCategorys, CreateStatus, LoginForm, PostForm, SignUpForm, UpdateProfileForm, UpdateUserForm
+from .models import Category, Post, Status
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -63,21 +63,22 @@ def auth_login(request):
         password = request.POST['password']
         next_url = request.POST['next']
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
             # Redirect to a success page.
             return redirect(next_url)
             ...
         else:
+            request_form = LoginForm(request.POST)
             # Return an 'invalid login' error message.
             mess="パスワードまたはアカウント名が間違っているので、再試行してください。"
             ...
-            return render(request, 'ad_mannager/login.html', {'mess':mess, 'form':lf, 'next':next_url})
+            return render(request, 'ad_mannager/login.html', {'mess':mess, 'form':request_form, 'next':next_url})
 
             
     else:
-        form = lf
-        return render(request, 'ad_mannager/login.html', {'form':form})
+        return render(request, 'ad_mannager/login.html', {'form':lf})
 
 @login_required()
 def logoutControl(request):
@@ -105,11 +106,12 @@ def profile(request, id):
         user_form = UpdateUserForm(request.POST, instance=user)
         profile_form = UpdateProfileForm(request.POST, instance=user.profile)
         if user_form.is_valid() and profile_form.is_valid():
+            path_old_img = (user.profile.avatar.url).lstrip("/")
             user_form.save()
             profile_form.save()
             if request.FILES.get('avatar', None) != None:
                 try:
-                    os.remove(request.user.avatar)
+                    os.remove(path_old_img)
                 except Exception as e:
                     print('Exception in removing old profile image: ', e)
                 user.profile.avatar = request.FILES.get('avatar', None)
@@ -125,8 +127,16 @@ def profile(request, id):
 
 @login_required()
 def p_setting(request):
-    if request.method == 'GET':
-        return render(request, 'ad_mannager/page-setting.html')
+    category_all = Category.objects.all()
+    if request.method == 'POST':
+       create_categoryForm = CreateCategorys(request.POST)
+       if create_categoryForm.is_valid():
+           create_categoryForm.save()
+           return redirect('post:post-setting')
+    else:
+        create_categoryForm = CreateCategorys()
+    return render(request, 'ad_mannager/post-setting.html', {'create_categoryForm':create_categoryForm, 'category_all':category_all})
+        
     
 @login_required()
 def d_setting(request):
