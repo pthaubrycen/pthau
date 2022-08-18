@@ -33,7 +33,7 @@
                     <h4>新規メンバーを追加してください</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{% url 'post:member-create' %}" method="POST">
+                    <form  novalidate action="{% url 'post:member-create' %}" method="POST">
                     {% csrf_token %}
                     {% for field in form %}
                         <div class="form-group row mb-4">
@@ -52,7 +52,7 @@
                     <div class="form-group row mb-4">
                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                     <div class="col-sm-12 col-md-7">
-                        <button type="submit" class="btn btn-primary">作成</button>
+                        <button type="submit" class="btn btn-primary float-right">作成</button>
                     </div>
                     </div>
                 </form>
@@ -61,42 +61,6 @@
             </div>
             </div>
         </div>
-
-      {% comment %} <div class="section-body">
-        <h2 class="section-title">メンバーを追加</h2>
-        <p class="section-lead">
-            以下の情報を入力してください。
-        </p>
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h4></h4>
-              </div>
-              <div class="card-body">
-                
-                <form method="post">
-                    {% csrf_token %}
-                    {% for field in form %}
-                      <p>
-                        {{ field.label_tag }}<br>
-                        {{ field }}
-                        {% if field.help_text %}
-                          <small style="color: grey">{{ field.help_text }}</small>
-                        {% endif %}
-                        {% for error in field.errors %}
-                          <p style="color: red">{{ error }}</p>
-                        {% endfor %}
-                      </p>
-                    {% endfor %}
-                    <button class="btn btn-primary" type="submit">Sign up</button>
-                  </form>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> {% endcomment %}
     </section>
   </div>
 

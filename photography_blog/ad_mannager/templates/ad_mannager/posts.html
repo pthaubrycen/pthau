@@ -87,6 +87,8 @@
                                 <a href="{% url 'post:post-edit' post.slug %}">編集</a>
                                 <div class="bullet"></div>
                                 <a href="{% url 'post:remove-confirm' post.slug %}" class="text-danger">消去</a>
+                                {% else %}
+                                <a href="{% url 'post:post-edit' post.slug %}" class="text-danger">復活</a>
                                 {% endif %}
                                 
                               </div>
@@ -107,7 +109,7 @@
                             <td><div class="badge badge-warning">{{post.status}}</div></td>
                             {% elif post.status.status_name == "保留中" %}
                             <td><div class="badge badge-danger">{{post.status}}</div></td>
-                            {% else%}
+                            {% else %}
                             <td><div class="badge badge-secondary">{{post.status}}</div></td>
                             {% endif %}
                       
@@ -162,7 +164,7 @@
         
           // Loop through all table rows, and hide those who don't match the search query
           for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[1];
+            td = tr[i].getElementsByTagName("td")[0];
             if (td) {
               txtValue = td.textContent || td.innerText;
               if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -187,7 +189,7 @@
         
           // Loop through all table rows, and hide those who don't match the search query
           for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[5];
+            td = tr[i].getElementsByTagName("td")[4];
             if (td) {
               txtValue = td.textContent || td.innerText;
               if (txtValue.toUpperCase().indexOf(filter) > -1) {

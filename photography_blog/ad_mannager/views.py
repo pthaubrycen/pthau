@@ -1,7 +1,7 @@
 import os
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout
-from ad_mannager.forms import CreateCategorys, CreateStatus, LoginForm, PostForm, SignUpForm, UpdateProfileForm, UpdateUserForm
+from ad_mannager.forms import CreateCategorys, LoginForm, PostForm, SignUpForm, UpdateProfileForm, UpdateUserForm
 from .models import Category, Post, Status
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -89,15 +89,19 @@ def logoutControl(request):
 @login_required()
 def edit(request, slug):
     post = get_object_or_404(Post, slug = slug)
-    if request.method == "GET":
-        form = PostForm(instance=post)
-        tags = post.tags.names()
-        return render(request, 'ad_mannager/post-edit.html', {'post':post, 'form':form, 'tags':tags})
-    else:
+    if request.method == 'POST':
         form = PostForm(request.POST,request.FILES, instance=post)
         if form.is_valid():
+            if post.isDelete == True and form['status'] != "消去済":
+                post.isDelete = False
             form.save()
             return redirect('post:index')
+        else:
+            return render(request, 'ad_mannager/post-edit.html', {'form':form, 'post' : post})
+    else:
+        tags = post.tags.all()
+        form = PostForm(instance=post)
+        return render(request, 'ad_mannager/post-edit.html', {'form':form, 'post': post, 'tags':tags})
 
 @login_required()
 def profile(request, id):

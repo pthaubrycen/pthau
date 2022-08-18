@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from taggit.managers import TaggableManager
-
+from django.utils.text import slugify
+from unidecode import unidecode
 # Create your models here.
 class Category(models.Model):
     category_name = models.CharField(max_length=25)
@@ -28,13 +29,17 @@ class Post(models.Model):
     update_at = models.DateField(auto_now=True)
     isDelete = models.BooleanField(default=False)
     tags = TaggableManager(blank=True)
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(unidecode(self.title))
+        super(Post, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
     
     def get_absolute_url(self):
         return reverse("post_detail", kwargs={"slug": self.slug})
-
+    
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=15, null=True)

@@ -1,4 +1,5 @@
-from dataclasses import field
+from cProfile import label
+from dataclasses import field, fields
 from django import forms
 from .models import Category, Post, Profile, Status
 from django_summernote.widgets import SummernoteWidget
@@ -8,17 +9,27 @@ from django.contrib.auth.forms import UserCreationForm
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('user', 'title', 'category', 'content', 'thumbnail', 'status', 'tags', 'slug')
+        fields = ('user','title', 'category', 'content', 'thumbnail', 'status', 'tags')
         widgets = {
             'content' : SummernoteWidget(),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'content': forms.Textarea(attrs={'class': 'summernote'}),
             'category': forms.Select(attrs={'class': 'form-control selectric'}),
+            'user': forms.Select(attrs={'class': 'form-control selectric'}),
             'status': forms.Select(attrs={'class': 'form-control selectric'}),
             'thumbnail': forms.FileInput(attrs={'id': 'image-upload'}),  
             'tags': forms.TextInput(attrs={'class': 'form-control inputtags'}),
-            'slug': forms.TextInput(attrs={'class': 'form-control'}),
         }
+    def __init__(self, *args, **kwargs):
+        super(PostForm, self).__init__(*args, **kwargs)
+        self.fields['content'].required = True
+        
+        self.fields['user'].label = '記者'
+        self.fields['title'].label = 'タイトル'  
+        self.fields['category'].label = 'カテゴリー'
+        self.fields['content'].label = 'コンテンツ'
+        self.fields['status'].label = '状態'
+        
 
 class LoginForm(forms.ModelForm):
     class Meta:
