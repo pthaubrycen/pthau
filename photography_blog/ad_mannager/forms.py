@@ -9,11 +9,11 @@ from django.contrib.auth.forms import UserCreationForm
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('user','title', 'category', 'content', 'thumbnail', 'status', 'tags')
+        fields = ('user', 'title', 'category', 'content', 'thumbnail', 'status', 'tags')
         widgets = {
             'content' : SummernoteWidget(),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'content': forms.Textarea(attrs={'class': 'summernote'}),
+            # 'content': forms.Textarea(attrs={'class': 'summernote'}),
             'category': forms.Select(attrs={'class': 'form-control selectric'}),
             'user': forms.Select(attrs={'class': 'form-control selectric'}),
             'status': forms.Select(attrs={'class': 'form-control selectric'}),
@@ -44,6 +44,7 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
+        
     def __init__(self, *args, **kwargs):
         super(UpdateUserForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
@@ -54,14 +55,16 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['bio', 'phone', 'task', 'avatar', 'address', 'birthday']
-
+        widgets = {
+            'bio' : SummernoteWidget(),
+        }
     
     def __init__(self, *args, **kwargs):
         super(UpdateProfileForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs["class"] = "form-control"
+            if field != self.fields['bio']:
+                field.widget.attrs["class"] = "form-control"
             field.required = False
-        self.fields['bio'].widget.attrs["class"] = "summernote"
             
 
 class SignUpForm(UserCreationForm):
