@@ -87,7 +87,7 @@ def logoutControl(request):
 
 
 @login_required()
-def edit(request, slug):
+def edit_post(request, slug):
     post = get_object_or_404(Post, slug = slug)
     if request.method == 'POST':
         form = PostForm(request.POST,request.FILES, instance=post)
@@ -111,15 +111,22 @@ def profile(request, id):
         profile_form = UpdateProfileForm(request.POST, instance=user.profile)
         if user_form.is_valid() and profile_form.is_valid():
             path_old_img = (user.profile.avatar.url).lstrip("/")
+            
+            new_avatar = request.FILES.get('avatar', None)
             user_form.save()
             profile_form.save()
-            if request.FILES.get('avatar', None) != None:
+            
+            if new_avatar != None and path_old_img != 'media/default.png':
                 try:
                     os.remove(path_old_img)
                 except Exception as e:
                     print('Exception in removing old profile image: ', e)
                 user.profile.avatar = request.FILES.get('avatar', None)
                 user.profile.save()
+            elif new_avatar != None:
+                user.profile.avatar = request.FILES.get('avatar', None)
+                user.profile.save()
+                
             messages.success(request, 'Your profile is updated successfully')
             return redirect('post:profile', id=user.id)
     else:
